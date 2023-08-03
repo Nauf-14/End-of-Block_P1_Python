@@ -60,6 +60,13 @@ def delete_note(notes_data, note_id):
             return True
     return False
 
+def filter_notes_by_date(notes_data, date_str):
+    filtered_notes = []
+    for note in notes_data:
+        if note["created_at"].startswith(date_str) or note["updated_at"].startswith(date_str):
+            filtered_notes.append(note)
+    return filtered_notes
+
 def main():
     notes_data = read_notes()
 
@@ -70,7 +77,8 @@ def main():
         print("3. Создать новую заметку")
         print("4. Обновить заметку")
         print("5. Удалить заметку")
-        print("6. Выйти")
+        print("6. Выборка по дате")
+        print("7. Выйти")
 
         choice = input("Выберите действие: ")
 
@@ -109,6 +117,13 @@ def main():
             else:
                 print("Заметка с таким ID не найдена.")
         elif choice == "6":
+            date_str = input("Введите дату (в формате ГГГГ-ММ-ДД): ")
+            filtered_notes = filter_notes_by_date(notes_data, date_str)
+            if filtered_notes:
+                list_notes(filtered_notes)
+            else:
+                print("Заметки с такой датой не найдены.")
+        elif choice == "7":
             break
         else:
             print("Неверный выбор. Пожалуйста, выберите снова.")
